@@ -31,7 +31,7 @@ const Login = ({ onLogin }) => {
             await onLogin();
         } catch (error) {
             console.log("Login Failed; invalid username or password");
-            setError("Invalid username or password");
+            setError("用户名或密码不能为空");
         } finally {
             setUsername('')
             setPassword('')
@@ -43,38 +43,38 @@ const Login = ({ onLogin }) => {
         <>
             <div className="card container mt-5">
                 <div className="card-body">
-                    <h1 className="card-title">LOGIN</h1>
-                    {error && <div className="alert alert-danger" role="alert">
+                    <h1 className="card-title">登录</h1>
+                    {error && <div className="alert alert-danger" role="alert" class="warning">
                         {error}
                     </div>}
                     <form className="loginForm" onSubmit={handleLogin}>
                         <div className="form-group">
-                            <label htmlFor="username">Username</label>
+                            <label htmlFor="username">用户名</label>
                             <input
                                 type="text"
                                 className="form-control"
                                 id="username"
-                                placeholder="Enter username..."
+                                placeholder="请输入用户名..."
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
                         </div>
                         {/* <small id="usernameHelp" className="form-text text-muted">Something you like</small> */}
                         <div className="form-group">
-                            <label htmlFor="password">Password</label>
+                            <label htmlFor="password">密码</label>
                             <input
                                 type="password"
                                 className="form-control"
                                 id="password"
-                                placeholder="Enter password..."
+                                placeholder="请输入密码..."
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
                         <button 
                             disabled={loading}
-                            type="submit" className="btn btn-lg btn-block btn-primary">
-                            {loading ? "Loading..." : "Login"}
+                            type="submit" className="btn btn-dark btn-block btn-primary">
+                            {loading ? "正在登录..." : "登录"}
                         </button>
                     </form>
                 </div>
