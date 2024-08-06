@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./login.css"
+import "./Login.css"
 
 const Login = ({ onLogin }) => {
 
@@ -28,7 +28,7 @@ const Login = ({ onLogin }) => {
             await CheckLogin({ username, password });
             console.log("Login Success");
             setError('');
-            await onLogin();
+            await onLogin(username, password);
         } catch (error) {
             console.log("Login Failed; invalid username or password");
             setError("用户名或密码不能为空");
@@ -43,7 +43,7 @@ const Login = ({ onLogin }) => {
         <>
             <div className="card container mt-5">
                 <div className="card-body">
-                    <h1 className="card-title">登录</h1>
+                    <h1 className="card-title">兴趣圈</h1>
                     {error && <div className="alert alert-danger" role="alert" class="warning">
                         {error}
                     </div>}
