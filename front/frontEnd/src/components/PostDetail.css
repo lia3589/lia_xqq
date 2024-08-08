@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 帖子整体靠左上 */
+    padding: 20px; /* 可根据需要调整 */
+}
+
+.post {
+    margin-bottom: 20px;  /* 使帖子与评论栏之间有一定间距 */
+}
+
+.comment-section {
+    width: 100%; /* 使评论栏的宽度达到容器的100% */
+    display: flex;
+    justify-content: center; /* 使输入框和按钮居中 */
+    gap: 10px; /* 可选: 输入框与按钮之间的距离 */
+}
+
+.input-box {
+    flex: 1; /* 使输入框占据可用宽度 */
+}
+
+.send-button {
+    flex-shrink: 0; /* 使按钮宽度保持不变 */
+}

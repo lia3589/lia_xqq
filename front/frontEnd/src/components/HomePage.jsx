@@ -1,24 +1,55 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import PostList from './PostList';
-import PostDetail from './PostDetail';
-import Profile from './Profile';
-import AddPost from './AddPost';
 import { GlobalStyles } from '../styles/globalStyles.jsx';
+import styled from 'styled-components';
 
-function HomePage() {
+const HomePageContainer = styled.div`
+  display: flex;
+`;
+
+const SidebarContainer = styled.div`
+  width: 20%;
+`;
+
+const ContentContainer = styled.div`
+  width: 80%;
+  position: relative;
+  padding: 0; /* 去除上侧的距离 */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* 帖子水平上占满右侧 */
+`;
+
+const FloatingButton = styled.button`
+  position: fixed; /* 固定在窗口右下角 */
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: blue;
+  color: white;
+  border: none;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+function HomePage({ onLogout }) {
   return (
-    <Router>
+    <HomePageContainer>
       <GlobalStyles />
-      <Sidebar />
-      <Routes>
-        <Route path="/" element={<PostList />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/post/:id" element={<PostDetail />} />
-        <Route path="/add-post" element={<AddPost />} />
-      </Routes>
-    </Router>
+      <SidebarContainer>
+        <Sidebar />
+      </SidebarContainer>
+      <ContentContainer>
+        <Outlet />
+        <FloatingButton>+</FloatingButton>
+      </ContentContainer>
+    </HomePageContainer>
   );
 }
 

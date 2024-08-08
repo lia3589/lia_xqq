@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import Post from './Post';
 import styled from 'styled-components';
+import postsData from './PostData';
 
 const PostListContainer = styled.div`
-  margin-left: 250px;
+  width: 100%;
   padding: 20px;
+  position : relative;
+  display: flex;
+  flex-wrap: wrap;
+  jusify-content: center;
+  align-items: center;
 `;
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // 模拟数据获取
-    setPosts([
-      { id: 1, title: '帖子1', content: '这是帖子1的内容', likes: 0, comments: [] },
-      { id: 2, title: '帖子2', content: '这是帖子2的内容', likes: 0, comments: [] },
-    ]);
+    setPosts(postsData);
   }, []);
 
   return (

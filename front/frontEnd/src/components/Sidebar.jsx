@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { UserContext } from '../App';
 
 const SidebarContainer = styled.div`
-  width: 250px;
+  width: 20%;
   background-color: #f4f4f4;
   padding: 20px;
   padding-right: 0px;
@@ -35,7 +35,7 @@ const Sidebar = () => {
 
   return (
     <SidebarContainer>
-      <Link to="/profile">
+      <Link to={'/profile/' + user.id}>
         <CircleImage 
           src= {user.avatar} 
           alt="个人头像" 
@@ -44,9 +44,9 @@ const Sidebar = () => {
       </Link>
       <ButtonContainer>
         <button>推荐</button>
-        <button>兴趣圈1</button>
+        <button>闲置出售</button>
         <button>兴趣圈2</button>
-        <button style={{ position: 'absolute', bottom: 20, left: 20 }}>+</button>
+        <button>+</button>
       </ButtonContainer>
     </SidebarContainer>
   );
