@@ -12,5 +12,11 @@ export class User {
   password: string;
 
   @Column()
-  email: string;
+  avatar: string;
+
+  @Column()
+  posts: Array<number>;
+
+  @Column()
+  activity: number;
 }

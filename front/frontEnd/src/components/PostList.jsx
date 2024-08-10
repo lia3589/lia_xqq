@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Post from './Post';
+import { Link } from 'react-router-dom';
+import { getPosts } from '../services/PostService'
 import styled from 'styled-components';
-import postsData from './PostData';
 
 const PostListContainer = styled.div`
   width: 100%;
@@ -17,7 +18,12 @@ const PostList = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    setPosts(postsData);
+    
+    const fetchPosts = async () => {
+      const postsData = await getPosts();
+      setPosts(postsData);
+    };
+    fetchPosts();
   }, []);
 
   return (

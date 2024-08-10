@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
 import defaultAvatar from '../assets/default-avatar1.jpg';
-import userData from "./UserData";
+import { login } from '../services/AuthService'
 
 const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
@@ -10,53 +10,18 @@ const Login = ({ onLogin }) => {
     const [loading, setLoading] = useState(false);
     const [avatar, setAvatar] = useState(defaultAvatar);
 
-    const CheckLogin = ({ username, password }) => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                const user = userData.find(u => u.username === username);
-                if (user) {
-                    if (user.password === password) {
-                        resolve(user);
-                    } else {
-                        reject("密码错误");
-                    }
-                }  else {
-                    if (username !== '' && password !== '') {
-                        const newUser = {
-                            id: userData.length,
-                            username,
-                            password,
-                            avatar,
-                            posts: [],
-                            activity: 0
-                        };
-                        resolve(newUser);
-                    } else {
-                        reject("用户名或密码不能为空");
-                    }
-                }
-            }, 1000);
-        });
-    }
-
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
-            const user = await CheckLogin({ username, password });
-            console.log("Login Success");
-            console.log(user.id);
-            setError('');
-            await onLogin(user.id, user.avatar);
+          const user = await login(username, password);
+          onLogin(user);
         } catch (error) {
-            console.log("Login Failed; ", error);
-            setError(error);
+          setError('用户名或密码错误');
         } finally {
-            setUsername('');
-            setPassword('');
-            setLoading(false);
+          setLoading(false);
         }
-    }
+      };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];

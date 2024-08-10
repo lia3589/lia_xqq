@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { GlobalStyles } from '../styles/globalStyles.jsx';
 import styled from 'styled-components';
@@ -39,15 +39,21 @@ const FloatingButton = styled.button`
 `;
 
 function HomePage({ onLogout }) {
+  const navigate = useNavigate();
+
+  const handleAddPost = () => {
+    navigate('/posts/new');
+  };
+
   return (
     <HomePageContainer>
       <GlobalStyles />
       <SidebarContainer>
-        <Sidebar />
+        <Sidebar onLogout={onLogout} />
       </SidebarContainer>
       <ContentContainer>
         <Outlet />
-        <FloatingButton>+</FloatingButton>
+        <FloatingButton onClick={handleAddPost}>+</FloatingButton>
       </ContentContainer>
     </HomePageContainer>
   );
