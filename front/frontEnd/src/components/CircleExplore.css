@@ -20,7 +20,7 @@
 
 .create-button {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #333;
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -52,9 +52,58 @@
 
 .circle-item button {
   padding: 5px 10px;
-  background-color: #28a745;
+  background-color: #333;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.circle-explore {
+  padding: 20px;
+}
+
+.circle-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.back-button {
+  position: absolute;
+  top: 5%;
+  left: 10%;
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.back-button:hover {
+  color: gray;
+}
+
+.circle-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.circle-item b {
+  font-weight: bold;
+}
+
+.circle-item div {
+  margin-bottom: 5px;
+}
+
+.create-button {
+  margin-left: auto;
 }

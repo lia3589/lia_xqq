@@ -18,11 +18,11 @@ export class PostController {
       const newPost = { id: newPostId, ...postData };
 
       // 处理上传的图片
-      console.log(postData)
+      // console.log(postData)
       if (this.ctx.files && this.ctx.files.length > 0) {
         newPost.picture = this.ctx.files[0].filename;
       }
-      console.log(this.ctx.files);
+      // console.log(this.ctx.files);
 
       posts.push(newPost);
 
@@ -39,6 +39,7 @@ export class PostController {
     try {
       const postsPath = path.resolve(__dirname, '../data/post.data.json');
       const posts = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
+      // console.log(posts);
       return { success: true, posts };
     } catch (error) {
       return { success: false, message: 'Failed to get posts' };

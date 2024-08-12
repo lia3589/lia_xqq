@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createPost } from '../services/PostService';
 import { getCircles } from '../services/CircleService';
+import { UploadPicture } from '../services/PictureService'; // 导入UploadPicture方法
 import './AddPost.css';
+import { ImageUploader } from './ImageUploader'
 
 const AddPost = () => {
   const [title, setTitle] = useState('');
@@ -36,67 +38,63 @@ const AddPost = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setWarning(''); // 清空之前的警告信息
+    e.preventDefault();
+    setWarning(''); // 清空之前的警告信息
 
-  if (!circle) {
-    setWarning('未选择兴趣圈');
-    return;
-  }
-  if (title.length < 5) {
-    setWarning('标题不少于5个字');
-    return;
-  }
-  if (!content) {
-    setWarning('正文不能为空');
-    return;
-  }
+    if (!circle) {
+      setWarning('未选择兴趣圈');
+      return;
+    }
+    if (title.length < 5) {
+      setWarning('标题不少于5个字');
+      return;
+    }
+    if (!content) {
+      setWarning('正文不能为空');
+      return;
+    }
 
-  const selectedCircle = circles.find(c => c.name === circle);
-  if (!selectedCircle) {
-    setWarning('选择的兴趣圈无效');
-    return;
-  }
+    const selectedCircle = circles.find(c => c.name === circle);
+    if (!selectedCircle) {
+      setWarning('选择的兴趣圈无效');
+      return;
+    }
 
-  try {
-    const formData = new FormData();
-    formData.append('poster_id', parseInt(user.id, 10));
-    formData.append('poster', user.username);
-    formData.append('time', new Date().toISOString());
-    formData.append('poster_avatar', user.avatar);
-    formData.append('interest_circle', selectedCircle.name);
-    formData.append('interest_circle_id', parseInt(selectedCircle.id, 10));
+    try {
+      const formData = new FormData();
+      formData.append('poster_id', parseInt(user.id, 10));
+      formData.append('poster', user.username);
+      formData.append('time', new Date().toISOString());
+      formData.append('poster_avatar', user.avatar);
+      formData.append('interest_circle', selectedCircle.name);
+      formData.append('interest_circle_id', parseInt(selectedCircle.id, 10));
 
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('likes', 0);
-    formData.append('comment', 0);
-    formData.append('views', 0);
-    formData.append('comments', []);
-    images.forEach((image, index) => {
-      console.log(image);
-      formData.append('picture', image);
-    });
+      formData.append('title', title);
+      formData.append('content', content);
+      formData.append('likes', 0);
+      formData.append('comment', 0);
+      formData.append('views', 0);
+      formData.append('comments', []);
 
-    // 调试输出
-    // for (let [key, value] of formData.entries()) {
-    //   console.log(key, value);
-    // }
+      const pictureUrls = [];
+      for (const image of images) {
+        const url = await UploadPicture(image);
+        pictureUrls.push(url);
+      }
+      console.log(pictureUrls);
+      formData.append('picture', JSON.stringify(pictureUrls)); 
+      await createPost(formData);
+      navigate('/homepage');
+    } catch (error) {
+      console.error('Failed to create post:', error);
+    }
+  };
 
-    await createPost(formData);
-    navigate('/homepage');
-  } catch (error) {
-    console.error('Failed to create post:', error);
-  }
-};
-
-  
   useEffect(() => {
     return () => {
       imagePreviews.forEach(preview => URL.revokeObjectURL(preview));
     };
   }, [imagePreviews]);
-  
 
   const handleImageChange = (e) => {
     const files = [...e.target.files];
@@ -107,6 +105,7 @@ const AddPost = () => {
 
   return (
     <div className="add-post-container">
+      <button onClick={() => navigate(-1)} className="back-button">返回</button>
       <h1>发布帖子</h1>
       {warning && <div className="alert alert-danger">{warning}</div>}
       <form onSubmit={handleSubmit}>
@@ -156,6 +155,7 @@ const AddPost = () => {
             onChange={handleImageChange}
             className="form-control"
           />
+          <ImageUploader images={images} setImages={setImages} />
           <div className="image-previews">
             {imagePreviews.map((preview, index) => (
               <img key={index} src={preview} alt={`preview-${index}`} className="preview-image" />

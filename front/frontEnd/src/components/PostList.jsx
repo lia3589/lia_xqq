@@ -37,8 +37,18 @@ const FloatingButton = styled.button`
   cursor: pointer;
 `;
 
+const SearchBar = styled.input`
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+`;
+
 const PostList = ({ circleId }) => {
   const [posts, setPosts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   const handleAddPost = () => {
@@ -64,10 +74,20 @@ const PostList = ({ circleId }) => {
     fetchPosts();
   }, [circleId]);
 
+  const filteredPosts = posts.filter(post =>
+    post.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <PostListContainer>
-      {posts.length > 0 ? (
-        posts.map(post => (
+      <SearchBar
+        type="text"
+        placeholder="搜索帖子"
+        value={searchTerm}
+        onChange={e => setSearchTerm(e.target.value)}
+      />
+      {filteredPosts.length > 0 ? (
+        filteredPosts.map(post => (
           <Post key={post.id} post={post} />
         ))
       ) : (

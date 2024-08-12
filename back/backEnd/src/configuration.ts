@@ -7,6 +7,7 @@ import * as crossDomain from '@midwayjs/cross-domain';
 import * as orm from '@midwayjs/orm';
 import * as jwt from '@midwayjs/jwt';
 import * as upload from '@midwayjs/upload';
+// import * as staticCache from 'koa-static-cache';
 
 // import { DefaultErrorFilter } from './filter/default.filter';
 // import { NotFoundFilter } from './filter/notfound.filter';
@@ -34,7 +35,19 @@ export class MainConfiguration {
   async onReady() {
     // add middleware
     this.app.useMiddleware([ReportMiddleware]);
-    // this.app.use(upload.upload().middleware);
+
+    // // 直接指定正确的静态文件目录路径
+    // const staticDir = '..\\uploads';
+    // console.log('Static directory:', staticDir);
+
+    // // 使用 koa-static-cache 配置静态文件服务
+    // this.app.use(staticCache({
+    //   dir: staticDir,
+    //   prefix: staticDir,
+    //   maxAge: 365 * 24 * 60 * 60,
+    //   gzip: true
+    // }));
+
     // add filter
     // this.app.useFilter([NotFoundFilter, DefaultErrorFilter]);
   }

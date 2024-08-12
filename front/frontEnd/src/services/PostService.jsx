@@ -28,8 +28,19 @@ export const createPost = async (formData) => {
   try {
     const formDataObject = {};
     for (let [key, value] of formData.entries()) {
-      if (key === 'poster_id' || key === 'interest_circle_id') {
+      if (key === 'poster_id' || key === 'interest_circle_id' || key === 'likes' || key === 'comment' || key === 'views') {
         formDataObject[key] = Number(value);
+      } else if (key === 'picture' || key === 'comments') {
+        try {
+          if (value==='') {
+            formDataObject[key] = [];
+          } else {
+            formDataObject[key] = JSON.parse(value);
+          }
+        } catch (e) {
+          console.error(`Failed to parse ${key} as JSON`, e);
+          formDataObject[key] = value;
+        }
       } else {
         formDataObject[key] = value;
       }
@@ -42,6 +53,7 @@ export const createPost = async (formData) => {
     throw error;
   }
 };
+
 
 export const likePost = async (postId) => {
   try {

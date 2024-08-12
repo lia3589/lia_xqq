@@ -61,6 +61,23 @@ const StyledButton = styled.button`
   text-align: center; /* 文字居中 */
 `;
 
+const ExploreSection = styled.div`
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  Disclaimer: 兴趣圈功能正在开发中，敬请期待！
+
+`;
+
+const EmptyMessage = styled.p`
+  color: #666;
+  text-align: center;
+`;
+
 const Sidebar = ({ onLogout }) => {
   const [user, setUser] = useState(null);
   const [circles, setCircles] = useState([]);
@@ -77,7 +94,7 @@ const Sidebar = ({ onLogout }) => {
         try {
           const circleMessage = await fetchUserCircle(parsedUser.user.id);
           setCircles(circleMessage);
-          // console.log('Circles:', circleMessage);
+          console.log('Circles:', circleMessage);
         } catch (error) {
           console.error('Failed to fetch circles:', error);
         }
@@ -105,11 +122,15 @@ const Sidebar = ({ onLogout }) => {
         </Link>
       </ProfileSection>
       <ButtonContainer>
-        <StyledButton>首页</StyledButton>
-        {circles.map((circle) => (
+        <StyledButton onClick={() => navigate('/homepage')}>首页</StyledButton>
+        <StyledButton onClick={handleExploreCircle}>发现新的兴趣圈</StyledButton>
+        <ExploreSection>
+          <h4 style={{color: 'gray'}}>我的兴趣圈</h4>
+          {circles.length === 0 && <EmptyMessage>空空如也，快去加入兴趣圈吧！</EmptyMessage>}
+          {circles.map((circle) => (
           <StyledButton onClick={() => navigate('/circle/' + circle.id)} key={circle.id}>{circle.name}</StyledButton>
         ))}
-        <StyledButton onClick={handleExploreCircle}>发现</StyledButton>
+        </ExploreSection>
       </ButtonContainer>
       <BottomSection>
         <button onClick={handleLogout}>登出</button>

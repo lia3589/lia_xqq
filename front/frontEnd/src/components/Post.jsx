@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { likePost, unlikePost } from '../services/PostService';
+import { addCircle } from '../services/CircleService'; // 确保导入了addCircle方法
+import { getUserById } from '../services/AuthService'; // 导入getUserById方法
 
 const PostContainer = styled.div`
   width: 100%;
@@ -86,11 +88,28 @@ const InterestCircleContainer = styled.div`
 
 const Post = ({ post }) => {
   const [liked, setLiked] = useState(post.liked || false);
+  const [user, setUser] = useState(null);
   const [likesCount, setLikesCount] = useState(post.likes || 0);
-  // 确保 post.picture 是一个数组
+  const [joined, setJoined] = useState(false);
   const pictures = Array.isArray(post.picture) && post.picture.length > 0 ? post.picture.slice(0, 4) : [];
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser.user);
+      getUserById(parsedUser.user.id).then(userData => {
+        // console.log('Fetched user data:', userData);
+        if (userData.user && userData.user.circlesIds && userData.user.circlesIds.includes(post.interest_circle_id)) {
+          setJoined(true);
+        } else {
+          setJoined(false);
+        }
+      }).catch(error => {
+        console.error('Failed to fetch user data:', error);
+      });
+    }
     setLiked(post.liked || false);
     setLikesCount(post.likes || 0);
   }, [post]);
@@ -107,6 +126,21 @@ const Post = ({ post }) => {
       setLiked(!liked);
     } catch (error) {
       console.error('Failed to like/unlike post:', error);
+    }
+  };
+
+  const handleJoinClick = async () => {
+    if (joined) {
+      navigate(`/circle/${post.interest_circle_id}`);
+    } else {
+      try {
+        const response = await addCircle(user.id, post.interest_circle_id);
+        console.log('Joined circle:', response);
+        setJoined(true);
+        navigate(`/circle/${post.interest_circle_id}`);
+      } catch (error) {
+        console.error('Failed to join circle:', error);
+      }
     }
   };
 
@@ -139,11 +173,10 @@ const Post = ({ post }) => {
       <Separator />
       <InterestCircleContainer>
         <Link to={`/circle/${post.interest_circle_id}`}>{post.interest_circle}</Link>
-        <button>加入</button>
+        <button onClick={handleJoinClick}>{joined ? '已加入' : '加入'}</button>
       </InterestCircleContainer>
     </PostContainer>
   );
 };
 
 export default Post;
-

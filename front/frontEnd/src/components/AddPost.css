@@ -62,3 +62,24 @@
   max-height: 100px;
   margin: 5px;
 }
+
+.back-button {
+  position: absolute;
+  top: 14%;
+  left: 30%;
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.back-button:hover {
+  background-color: gray;
+}

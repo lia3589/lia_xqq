@@ -60,7 +60,7 @@ export const addCircle = async (userId, circleId) => {
       "userId": userId,
       "circleId": circleId
     });
-    return response.data.circle;
+    return response;
   } catch (error) {
     console.error('Failed to add circle:', error);
     throw error;
