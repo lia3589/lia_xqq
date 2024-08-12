@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "name": "PS爱好者圈",
+        "description": "不止是PS",
+        "image": null,
+        "creator_id": 0,
+        "members": [0, 1, 2, 3, 4],
+        "activeUsers": [1],
+        "activity": 0
+    },
+    {
+        "id": 2,
+        "name": "Circle 2",
+        "description": "This is the second circle",
+        "image": null,
+        "creator_id": 0,
+        "members": [0, 1, 2, 3, 4],
+        "activeUsers": [0],
+        "activity": 0
+    },
+    {
+        "id": 3,
+        "name": "Circle 3",
+        "description": "This is the third circle",
+         "image": null,
+        "creator_id": 0,
+        "members": [0, 1, 2, 3, 4],
+        "activeUsers": [],
+        "activity": 0
+    },
+    {
+        "id": 4,
+        "name": "Circle 4",
+        "description": "This is the fourth circle",
+        "image": null,
+        "creator_id": 0,
+        "members": [0, 1, 2, 3, 4],
+        "activeUsers": [1, 2, 3],
+        "activity": 0
+    }
+]

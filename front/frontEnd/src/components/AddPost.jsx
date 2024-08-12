@@ -1,61 +1,170 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createPost } from '../services/PostService';
+import { getCircles } from '../services/CircleService';
+import './AddPost.css';
 
 const AddPost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [image, setImage] = useState(null);
+  const [circle, setCircle] = useState('');
+  const [user, setUser] = useState(null);
+  const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [circles, setCircles] = useState([]);
+  const [filteredCircles, setFilteredCircles] = useState([]);
+  const [warning, setWarning] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('content', content);
-    if (image) {
-      formData.append('image', image);
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser.user);
     }
+    fetchCircles();
+  }, []);
 
+  const fetchCircles = async () => {
     try {
-      await createPost(formData);
-      navigate('/homepage');
+      const circlesData = await getCircles();
+      setCircles(circlesData);
+      setFilteredCircles(circlesData);
     } catch (error) {
-      console.error('Failed to create post:', error);
+      console.error('Failed to fetch circles:', error);
     }
   };
 
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setWarning(''); // 清空之前的警告信息
+
+  if (!circle) {
+    setWarning('未选择兴趣圈');
+    return;
+  }
+  if (title.length < 5) {
+    setWarning('标题不少于5个字');
+    return;
+  }
+  if (!content) {
+    setWarning('正文不能为空');
+    return;
+  }
+
+  const selectedCircle = circles.find(c => c.name === circle);
+  if (!selectedCircle) {
+    setWarning('选择的兴趣圈无效');
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append('poster_id', parseInt(user.id, 10));
+    formData.append('poster', user.username);
+    formData.append('time', new Date().toISOString());
+    formData.append('poster_avatar', user.avatar);
+    formData.append('interest_circle', selectedCircle.name);
+    formData.append('interest_circle_id', parseInt(selectedCircle.id, 10));
+
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('likes', 0);
+    formData.append('comment', 0);
+    formData.append('views', 0);
+    formData.append('comments', []);
+    images.forEach((image, index) => {
+      console.log(image);
+      formData.append('picture', image);
+    });
+
+    // 调试输出
+    // for (let [key, value] of formData.entries()) {
+    //   console.log(key, value);
+    // }
+
+    await createPost(formData);
+    navigate('/homepage');
+  } catch (error) {
+    console.error('Failed to create post:', error);
+  }
+};
+
+  
+  useEffect(() => {
+    return () => {
+      imagePreviews.forEach(preview => URL.revokeObjectURL(preview));
+    };
+  }, [imagePreviews]);
+  
+
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    const files = [...e.target.files];
+    setImages(files);
+    const previews = files.map(file => URL.createObjectURL(file));
+    setImagePreviews(previews);
   };
 
   return (
-    <div>
-      <h1>Add Post</h1>
+    <div className="add-post-container">
+      <h1>发布帖子</h1>
+      {warning && <div className="alert alert-danger">{warning}</div>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title</label>
+        <div className="form-group">
+          <label>
+            <i className="fas fa-user"></i> 选择兴趣圈
+          </label>
+          <select
+            value={circle}
+            onChange={(e) => setCircle(e.target.value)}
+            className="form-control"
+          >
+            <option value="">选择兴趣圈</option>
+            {filteredCircles.map(circle => (
+              <option key={circle.id} value={circle.name}>{circle.name}</option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
+          <label>
+            <i className="fas fa-heading"></i> 标题
+          </label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            className="form-control"
           />
         </div>
-        <div>
-          <label>Content</label>
+        <div className="form-group">
+          <label>
+            <i className="fas fa-align-left"></i> 正文
+          </label>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
+            className="form-control"
           />
         </div>
-        <div>
-          <label>Image</label>
+        <div className="form-group">
+          <label>
+            <i className="fas fa-image"></i> 图片
+          </label>
           <input
             type="file"
+            multiple
             onChange={handleImageChange}
+            className="form-control"
           />
+          <div className="image-previews">
+            {imagePreviews.map((preview, index) => (
+              <img key={index} src={preview} alt={`preview-${index}`} className="preview-image" />
+            ))}
+          </div>
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" className="btn btn-primary">
+          <i className="fas fa-paper-plane"></i> Submit
+        </button>
       </form>
     </div>
   );

@@ -8,6 +8,9 @@ import PostDetail from './components/PostDetail';
 import Profile from './components/Profile';
 import AddPost from './components/AddPost';
 import { checkAuth } from './services/AuthService';
+import Circle from './components/Circle';
+import CreateCircle from './components/CreateCircle';
+import CircleExplore from './components/CircleExplore';
 
 export const UserContext = createContext();
 
@@ -18,15 +21,30 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+      setIsLoggedIn(true);
+      setUser(storedUser);
+    }
+  
     const checkAuthentication = async () => {
-      const user = await checkAuth();
-      if (user) {
-        setIsLoggedIn(true);
-        setUser(user);
+      try {
+        const user = await checkAuth();
+        if (user) {
+          setIsLoggedIn(true);
+          setUser(user);
+        } else {
+          handleLogout();
+        }
+      } catch (error) {
+        console.error("Authentication check failed", error);
+        handleLogout();
       }
     };
+    
     checkAuthentication();
   }, []);
+  
 
   const handleLogin = (user) => {
     setIsLoggedIn(true);
@@ -40,17 +58,32 @@ function App() {
     localStorage.removeItem('user');
   };
 
+  const NotFound = () => {
+    return (
+      <div>
+        <h1>Page Not Found</h1>
+        <p>Sorry, the page you are looking for does not exist.</p>
+      </div>
+    );
+  };
+
   return (
     <Router>
       <UserContext.Provider value={user}>
         <Routes>
           <Route path="/homepage" element={isLoggedIn ? <HomePage onLogout={handleLogout} /> : <Navigate to="/" />}>
-            <Route index element={<PostList />} />
+            <Route index element={<PostList circleId={-1} />} />
           </Route>
+          <Route path='/circle/:id' element={isLoggedIn ? <Circle /> : <Navigate to="/" />}></Route>
+          <Route path='/circle/create' element={isLoggedIn ? <CreateCircle /> : <Navigate to="/" />}></Route>
+          <Route path='/circle/explore' element={isLoggedIn ? <CircleExplore /> : <Navigate to="/" />}></Route>
           <Route path="/profiles/:id" element={isLoggedIn ? <Profile /> : <Navigate to="/" />} />
           <Route path="/posts/new" element={isLoggedIn ? <AddPost /> : <Navigate to="/" />} />
           <Route path="/posts/:id" element={isLoggedIn ? <PostDetail /> : <Navigate to="/" />} />
           <Route path="/" element={isLoggedIn ? <Navigate to="/homepage" /> : <Login onLogin={handleLogin} />} />
+          <Route path="*" element={<NotFound />} />
+
+          
         </Routes>
       </UserContext.Provider>
     </Router>

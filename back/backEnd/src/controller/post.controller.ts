@@ -1,45 +1,143 @@
-// src/controller/post.controller.ts
-import { Controller, Get, Post, Body, Inject } from '@midwayjs/core';
+import { Controller, Get, Post, Body, Inject, Param } from '@midwayjs/core';
 import { Context } from '@midwayjs/koa';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Upload, UploadOptions } from '@midwayjs/upload';
 
 @Controller('/posts')
 export class PostController {
-    @Inject()
-    ctx: Context;
+  @Inject()
+  ctx: Context;
 
-    @Post('/')
-    @Upload()
-    async createPost(@Body() postData: any, @UploadOptions() file: any) {
-        const postsPath = path.resolve(__dirname, '../data/post.data.json');
-        const posts = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
+  @Post('/')
+  async createPost(@Body() postData: any) {
+    try {
+      const postsPath = path.resolve(__dirname, '../data/post.data.json');
+      const posts = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
 
-        // 生成新的帖子ID
-        const newPostId = posts.length > 0 ? Math.max(...posts.map(post => post.id)) + 1 : 1;
-        const newPost = { id: newPostId, ...postData };
+      const newPostId = posts.length > 0 ? Math.max(...posts.map(post => post.id)) + 1 : 1;
+      const newPost = { id: newPostId, ...postData };
 
-        // 处理上传的图片
-        if (file) {
-            const filePath = path.join(__dirname, '../public/uploads', file.filename);
-            fs.renameSync(file.data, filePath);
-            newPost.image = `/public/uploads/${file.filename}`;
-        }
+      // 处理上传的图片
+      console.log(postData)
+      if (this.ctx.files && this.ctx.files.length > 0) {
+        newPost.picture = this.ctx.files[0].filename;
+      }
+      console.log(this.ctx.files);
 
-        // 将新帖子添加到帖子列表中
-        posts.push(newPost);
+      posts.push(newPost);
 
-        // 将更新后的帖子列表写回到post.data.json文件中
+      fs.writeFileSync(postsPath, JSON.stringify(posts, null, 2), 'utf-8');
+
+      return { success: true, post: newPost };
+    } catch (error) {
+      return { success: false, message: 'Failed to create post' };
+    }
+  }
+
+  @Get('/')
+  async getPosts() {
+    try {
+      const postsPath = path.resolve(__dirname, '../data/post.data.json');
+      const posts = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
+      return { success: true, posts };
+    } catch (error) {
+      return { success: false, message: 'Failed to get posts' };
+    }
+  }
+
+  @Get('/circle/:circleId')
+  async getCirclePosts(@Param('circleId') circleId: number) {
+    try {
+      const postsPath = path.resolve(__dirname, '../data/post.data.json');
+      const posts = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
+
+      const circlePosts = posts.filter((post) => post.interest_circle_id === circleId);
+
+      return { success: true, circlePosts };
+    } catch (error) {
+      return { success: false, message: 'Failed to get circle posts' };
+    }
+  }
+
+  @Get('/:id')
+  async getPost(@Param('id') postId: number) {
+    try {
+      const postsPath = path.resolve(__dirname, '../data/post.data.json');
+      const posts = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
+
+      const post = posts.find((p) => p.id === postId);
+      if (post) {
+        return { success: true, post };
+      } else {
+        return { success: false, message: 'Post not found' };
+      }
+    } catch (error) {
+      return { success: false, message: 'Failed to get post' };
+    }
+  }
+
+  @Post('/:id/like')
+  async likePost(@Param('id') postId: number) {
+    try {
+      const postsPath = path.resolve(__dirname, '../data/post.data.json');
+      const posts = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
+
+      const post = posts.find((p) => p.id === postId);
+      if (post) {
+        post.likes += 1;
+        post.liked = true;
         fs.writeFileSync(postsPath, JSON.stringify(posts, null, 2), 'utf-8');
-
-        return { success: true, post: newPost };
+        return { success: true, post };
+      } else {
+        return { success: false, message: 'Post not found' };
+      }
+    } catch (error) {
+      return { success: false, message: 'Failed to like post' };
     }
+  }
 
-    @Get('/')
-    async getPosts() {
-        const postsPath = path.resolve(__dirname, '../data/post.data.json');
-        const posts = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
-        return { success: true, posts };
+  @Post('/:id/unlike')
+  async unlikePost(@Param('id') postId: number) {
+    try {
+      const postsPath = path.resolve(__dirname, '../data/post.data.json');
+      const posts = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
+
+      const post = posts.find((p) => p.id === postId);
+      if (post) {
+        post.likes -= 1;
+        post.liked = false;
+        fs.writeFileSync(postsPath, JSON.stringify(posts, null, 2), 'utf-8');
+        return { success: true, post };
+      } else {
+        return { success: false, message: 'Post not found' };
+      }
+    } catch (error) {
+      return { success: false, message: 'Failed to unlike post' };
     }
+  }
+
+  @Post('/:id/comment')
+  async addComment(@Param('id') postId: number, @Body() commentData: any) {
+    try {
+      const postsPath = path.resolve(__dirname, '../data/post.data.json');
+      const posts = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
+
+      const post = posts.find((p) => p.id === postId);
+      if (post) {
+        const newComment = {
+          id: post.comments.length + 1,
+          ...commentData,
+          time: new Date().toISOString(),
+          likes: 0,
+        };
+        post.comments.push(newComment);
+        fs.writeFileSync(postsPath, JSON.stringify(posts, null, 2), 'utf-8');
+        return { success: true, comment: newComment };
+      } else {
+        return { success: false, message: 'Post not found' };
+      }
+    } catch (error) {
+      return { success: false, message: 'Failed to add comment' };
+    }
+  }
 }

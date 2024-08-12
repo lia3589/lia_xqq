@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { UserContext } from '../App';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { fetchUserCircle } from '../services/CircleService';
 
 const SidebarContainer = styled.div`
   width: 20%;
@@ -22,6 +21,9 @@ const ProfileSection = styled.div`
   border-bottom: 1px solid #ccc;
   padding-bottom: 20px;
   margin-bottom: 20px;
+  h3 {
+    color: #333;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -59,32 +61,55 @@ const StyledButton = styled.button`
   text-align: center; /* 文字居中 */
 `;
 
-const Sidebar = ({onLogout}) => {
-
-  const user = useContext(UserContext);
+const Sidebar = ({ onLogout }) => {
+  const [user, setUser] = useState(null);
+  const [circles, setCircles] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser.user);
+
+      // 获取用户的兴趣圈
+      const getCircles = async () => {
+        try {
+          const circleMessage = await fetchUserCircle(parsedUser.user.id);
+          setCircles(circleMessage);
+          // console.log('Circles:', circleMessage);
+        } catch (error) {
+          console.error('Failed to fetch circles:', error);
+        }
+      };
+
+      getCircles();
+    }
+  }, []);
 
   const handleLogout = () => {
     onLogout();
     navigate('/');
   };
 
+  const handleExploreCircle = () => {
+    navigate('/circle/explore');
+  };
+
   return (
     <SidebarContainer>
       <ProfileSection>
-        <Link to={'/profile/' + user.id}>
-          <CircleImage 
-            src= {user.avatar} 
-            alt="个人头像" 
-          />
-          <h5>{user.username}</h5>
+        <Link to={"/profiles/" + user?.id}>
+          <CircleImage src={user?.avatar} alt="个人头像" />
+          <h3>{user?.username}</h3>
         </Link>
       </ProfileSection>
       <ButtonContainer>
-        <StyledButton>推荐</StyledButton>
-        <StyledButton>闲置出售</StyledButton>
-        <StyledButton>兴趣圈2</StyledButton>
-        <StyledButton>+</StyledButton>
+        <StyledButton>首页</StyledButton>
+        {circles.map((circle) => (
+          <StyledButton onClick={() => navigate('/circle/' + circle.id)} key={circle.id}>{circle.name}</StyledButton>
+        ))}
+        <StyledButton onClick={handleExploreCircle}>发现</StyledButton>
       </ButtonContainer>
       <BottomSection>
         <button onClick={handleLogout}>登出</button>

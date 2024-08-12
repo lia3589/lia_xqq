@@ -2,9 +2,11 @@
     {
         "id": 1,
         "poster": "我要成为原神高手",
+        "poster_id": 1,
         "time": "2024-2-31",
         "poster_avatar": "/src/assets/default-avatar3.jpg",
-        "interest_circle": "闲置出售",
+        "interest_circle": "PS爱好者圈",
+        "interest_circle_id": 1,
         "title": "优质价格出售自制头像",
         "content": "楼主是大学生,课余时间学习PS制作了一些头像给粉丝宝宝们,数量有限,只给有缘人,5r/张,先到先得",
         "picture": [
@@ -14,25 +16,25 @@
             "/src/assets/default-avatar4.jpg",
             "/src/assets/default-avatar5.jpg"
         ],
-        "likes": 0,
-        "comment": 0,
+        "likes": 901,
+        "comment": 3,
         "comments": [
             {
-                "id": 2,
+                "id": 1,
                 "poster_id": 0,
                 "content": "绳网并非法外之地",
                 "time": "2024-2-31",
                 "likes": 100
             },
             {
-                "id": 3,
+                "id": 2,
                 "poster_id": 1,
                 "content": "2楼说的对",
                 "time": "2024-2-31",
                 "likes": 1
             },
             {
-                "id": 4,
+                "id": 3,
                 "poster_id": 2,
                 "content": "3楼说的对",
                 "time": "2024-2-31",
@@ -43,9 +45,11 @@
     {
         "id": 2,
         "poster": "admin",
+        "poster_id": 0,
         "time": "2024-2-31",
         "poster_avatar": "/src/assets/default-avatar2.jpg",
         "interest_circle": "circle2",
+        "interest_circle_id": 2,
         "title": "帖子2",
         "content": "这是帖子2的内容",
         "picture": [
@@ -59,9 +63,11 @@
     {
         "id": 3,
         "poster": "admin",
+        "poster_id": 0,
         "time": "2024-2-31",
         "poster_avatar": "/src/assets/default-avatar3.jpg",
         "interest_circle": "circle3",
+        "interest_circle_id": 3,
         "title": "帖子3",
         "content": "这是帖子3的内容",
         "picture": [
@@ -76,9 +82,11 @@
     {
         "id": 4,
         "poster": "user4",
+        "poster_id": 4,
         "time": "2024-2-31",
         "poster_avatar": "/src/assets/default-avatar4.jpg",
         "interest_circle": "circle4",
+        "interest_circle_id": 4,
         "title": "帖子4",
         "content": "这是帖子4的内容",
         "picture": [
@@ -95,9 +103,11 @@
     {
         "id": 5,
         "poster": "user5",
+        "poster_id": 5,
         "time": "2024-2-31",
         "poster_avatar": "/src/assets/default-avatar5.jpg",
         "interest_circle": "circle5",
+        "interest_circle_id": 4,
         "title": "帖子5",
         "content": "这是帖子5的内容",
         "picture": [

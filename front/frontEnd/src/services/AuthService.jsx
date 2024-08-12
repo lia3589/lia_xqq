@@ -19,3 +19,13 @@ export const checkAuth = async () => {
   }
   return null;
 };
+
+export const getUserById = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to get user:', error);
+    throw error;
+  }
+};

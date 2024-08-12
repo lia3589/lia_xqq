@@ -40,7 +40,7 @@ const Login = ({ onLogin }) => {
                 <div className="card-body">
                     <img src='\src\assets\INTER-KNOT.png' alt="logo"></img>
                     <h1 className="card-title">登录绳网</h1>
-                    {error && <div className="alert alert-danger" role="alert" className="warning">
+                    {error && <div className="alert alert-danger" role="alert" >
                         {error}
                     </div>}
                     <form className="loginForm" onSubmit={handleLogin}>

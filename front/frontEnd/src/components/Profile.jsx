@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import postsData from './PostData';
 import styled from 'styled-components';
 import Post from './Post';
 import { useParams } from 'react-router-dom';
-import userData from './UserData';
+import { getUserById } from '../services/AuthService';
 
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 20px;
+  width: 100%;
 `;
 
 const TopRow = styled.div`
@@ -57,12 +58,23 @@ const PostListContainer = styled.div`
   margin-top: 20px;
 `;
 
-
 const ProfilePage = () => {
   const { id } = useParams();
-  const user = userData.find(user => user.id === parseInt(id, 10));
+  const [user, setUser] = React.useState(null);
 
-  console.log(user);
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await getUserById(id);
+      setUser(response.user);
+    };
+    fetchUser();
+  }, [id]);
+
+
+  if (!user) {
+    return <div>用户不存在</div>;
+  }
+
   const filteredPosts = user.posts && Array.isArray(user.posts)
     ? user.posts.map(postId => postsData.find(post => post.id === postId)).filter(post => post)
     : [];

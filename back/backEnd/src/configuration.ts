@@ -34,6 +34,7 @@ export class MainConfiguration {
   async onReady() {
     // add middleware
     this.app.useMiddleware([ReportMiddleware]);
+    // this.app.use(upload.upload().middleware);
     // add filter
     // this.app.useFilter([NotFoundFilter, DefaultErrorFilter]);
   }

@@ -5,8 +5,8 @@
         "password": "1",
         "avatar": "/src/assets/default-avatar1.jpg",
         "posts": [],
-        "activity": 0,
-        "interest_circles": [],
+        "circlesActivity": {},
+        "circlesIds": [],
         "messages": []
     },
     {
@@ -15,8 +15,12 @@
         "password": "123456",
         "avatar": "/src/assets/default-avatar1.jpg",
         "posts": [2, 3],
-        "activity": 100,
-        "interest_circles": [],
+        "circlesActivity": {
+            "1": 50,
+            "2": 30,
+            "3": 20
+        },
+        "circlesIds": [1, 2, 3],
         "messages": []
     },
     {
@@ -25,8 +29,8 @@
         "password": "1",
         "avatar": "/src/assets/default-avatar2.jpg",
         "posts": [1],
-        "activity": 80,
-        "interest_circles": [],
+        "circlesActivity": {},
+        "circlesIds": [],
         "messages": []
     },
     {
@@ -35,8 +39,38 @@
         "password": "123456",
         "avatar": "/src/assets/default-avatar3.jpg",
         "posts": [],
-        "activity": 10,
-        "interest_circles": [],
+        "circlesActivity": {},
+        "circlesIds": [],
+        "messages": []
+    },
+    {
+        "id": 3,
+        "username": "user3",
+        "password": "123456",
+        "avatar": "/src/assets/default-avatar4.jpg",
+        "posts": [],
+        "circlesActivity": {},
+        "circlesIds": [],
+        "messages": []
+    },
+    {
+        "id": 4,
+        "username": "user4",
+        "password": "123456",
+        "avatar": "/src/assets/default-avatar5.jpg",
+        "posts": [],
+        "circlesActivity": {},
+        "circlesIds": [],
+        "messages": []
+    },
+    {
+        "id": 5,
+        "username": "user5",
+        "password": "123456",
+        "avatar": "/src/assets/default-avatar6.jpg",
+        "posts": [],
+        "circlesActivity": {},
+        "circlesIds": [],
         "messages": []
     }
 ]
