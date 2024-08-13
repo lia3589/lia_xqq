@@ -1,27 +1,30 @@
 name: Frontend CI/CD
 
 on:
- push:
+  push:
     branches:
       - main
 
 jobs:
- build-frontend:
+  build-frontend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
           persist-credentials: false
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - name: Install dependencies
+      - name: Change working directory to frontend
+        run: cd front/frontEnd
+      - name: Install frontend dependencies
         run: npm install
-      - name: Build
+      - name: Build frontend
         run: npm run build
-      - name: Deploy to staging environment
+      - name: Deploy frontend
         uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
           branch: gh-pages
-          folder: ./dist
+          folder: ./front/frontEnd/dist
