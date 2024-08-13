@@ -96,7 +96,7 @@ const Login = ({ onLogin }) => {
         <>
             <div className="card container mt-5">
                 <div className="card-body">
-                    <img src='\src\assets\INTER-KNOT.png' alt="logo"></img>
+                    <img src='\src\assets\INTER-KNOT1.png' alt="logo"></img>
                     <h1 className="card-title">登录绳网</h1>
                     {error && <div className="alert alert-danger" role="alert" >
                         {error}
