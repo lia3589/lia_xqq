@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import './PostDetail.css';
 import { UserContext } from '../App';
-import { Link } from'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getPostById, likePost, addComment } from '../services/PostService';
 import Comment from './Comment';
 
@@ -31,24 +30,6 @@ const PostDetail = () => {
     return <div>帖子不存在</div>;
   }
 
-  // const Comment = ({ comment }) => {
-  //   const commenter = getUserById(comment.poster_id);
-  //   return (
-  //     <div key={comment.id} style={{ marginTop: '20px', borderTop: '1px solid #ccc', paddingTop: '10px', width: '100%', textAlign: 'left' }}>
-  //       <div style={{ display: 'flex', alignItems: 'center' }}>
-  //         <img src={commenter ? commenter.avatar : commenter.avatar} alt="头像" style={{ borderRadius: '50%', width: '30px', height: '30px' }} />
-  //         <span style={{ marginLeft: '10px' }}>{commenter ? commenter.username : '未知用户'}</span>
-  //       </div>
-  //       <div style={{ marginTop: '5px' }}>
-  //         <span>{comment.time}</span>
-  //         <span style={{ marginLeft: '10px' }}>{comment.likes} 赞</span>
-  //       </div>
-  //       <div style={{ marginTop: '5px' }}>{typeof comment.content === 'string' ? comment.content : JSON.stringify(comment.content)}</div>
-  //       <button onClick={() => handleCommentLike(comment.id)} style={{ marginTop: '5px' }}>点赞 ({comment.likes})</button>
-  //     </div>
-  //   );
-  // };
-
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (newComment.trim()) {
@@ -71,64 +52,152 @@ const PostDetail = () => {
     }
   };
 
-  // const handleCommentLike = (commentId) => {
-  //   setComments(comments.map(comment => {
-  //     if (comment.id === commentId) {
-  //       return { ...comment, likes: comment.likes + 1 };
-  //     }
-  //     return comment;
-  //   }));
-  // };
-
   return (
-    <div style={{width: '100%', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center',height: '80%' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+    <div style={styles.container}>
+      <div style={styles.header}>
         <button onClick={() => navigate(-1)}>退出</button>
         <span>帖子详情</span>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px', width: '100%' }}>
+      <div style={styles.postHeader}>
         <Link to={`/profiles/${post.poster_id}`}>
-          <img src={post.poster_avatar} alt="头像" style={{ borderRadius: '50%', width: '50px', height: '50px' }} />
+          <img src={post.poster_avatar} alt="头像" style={styles.avatar} />
         </Link>
         <Link to={`/profiles/${post.poster_id}`}>
-          <span style={{ marginLeft: '10px' }}>{post.poster}</span>
+          <span style={styles.posterName}>{post.poster}</span>
         </Link>
-        <span style={{ marginLeft: 'auto' }}>{post.interest_circle}</span>
+        <span style={styles.interestCircle}>{post.interest_circle}</span>
       </div>
-      <div style={{ marginTop: '10px', width: '100%', textAlign: 'left' }}>
+      <div style={styles.postInfo}>
         <span>{post.time}</span>
-        <span style={{ marginLeft: '10px' }}>{post.activity}</span>
+        <span style={styles.activity}>{post.activity}</span>
       </div>
-      <div style={{ fontWeight: 'bold', marginTop: '10px', width: '100%', textAlign: 'left' }}>{post.title}</div>
-      <div style={{ marginTop: '10px', width: '100%', textAlign: 'left' }}>{post.content}</div>
+      <div style={styles.postTitle}>{post.title}</div>
+      <div style={styles.postContent}>{post.content}</div>
       {post.picture && post.picture.length > 0 && (
-        <div style={{ marginTop: '10px', display: 'flex', flexWrap: 'wrap', width: '100%' }}>
+        <div style={styles.picturesContainer}>
           {post.picture.map((img, index) => (
-            <img key={index} src={img} alt="图片" style={{ borderRadius: '10px', width: '100px', height: '100px', margin: '5px' }} />
+            <img key={index} src={img} alt="图片" style={styles.picture} />
           ))}
         </div>
       )}
-      <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', width: '100%' }}>
+      <div style={styles.actions}>
         <button onClick={handleLike}>点赞 ({likes})</button>
-        <button style={{ marginLeft: '10px' }}>评论 ({comments.length})</button>
+        <button style={styles.commentButton}>评论 ({comments.length})</button>
       </div>
-      {comments.map((comment, index) => { return <Comment key={index} comment={comment} />})}
+      {comments.map((comment, index) => (
+        <Comment key={index} comment={comment} />
+      ))}
 
-      <div style={{ position: 'fixed', bottom: '10px', width: '80%', display: 'flex', justifyContent: 'center', padding: '10px', background: 'white' }}>
-        <form onSubmit={handleCommentSubmit} style={{ display: 'flex', width: '100%' }}>
+      <div style={styles.commentFormContainer}>
+        <form onSubmit={handleCommentSubmit} style={styles.commentForm}>
           <input
             type="text"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="输入回复内容"
             required
-            style={{ flexGrow: 1, marginRight: '10px', padding: '10px' }}
+            style={styles.commentInput}
           />
-          <button type="submit" style={{ padding: '10px' }}>发送</button>
+          <button type="submit" style={styles.submitButton}>发送</button>
         </form>
       </div>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    width: '100%',
+    padding: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    height: '80%',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  },
+  postHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: '20px',
+    width: '100%',
+  },
+  avatar: {
+    borderRadius: '50%',
+    width: '50px',
+    height: '50px',
+  },
+  posterName: {
+    marginLeft: '10px',
+  },
+  interestCircle: {
+    marginLeft: 'auto',
+  },
+  postInfo: {
+    marginTop: '10px',
+    width: '100%',
+    textAlign: 'left',
+  },
+  activity: {
+    marginLeft: '10px',
+  },
+  postTitle: {
+    fontWeight: 'bold',
+    marginTop: '10px',
+    width: '100%',
+    textAlign: 'left',
+  },
+  postContent: {
+    marginTop: '10px',
+    width: '100%',
+    textAlign: 'left',
+  },
+  picturesContainer: {
+    marginTop: '10px',
+    display: 'flex',
+    flexWrap: 'wrap',
+    width: '100%',
+  },
+  picture: {
+    borderRadius: '10px',
+    width: '100px',
+    height: '100px',
+    margin: '5px',
+  },
+  actions: {
+    marginTop: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+  },
+  commentButton: {
+    marginLeft: '10px',
+  },
+  commentFormContainer: {
+    position: 'fixed',
+    bottom: '10px',
+    width: '80%',
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '10px',
+    background: 'white',
+  },
+  commentForm: {
+    display: 'flex',
+    width: '100%',
+  },
+  commentInput: {
+    flexGrow: 1,
+    marginRight: '10px',
+    padding: '10px',
+  },
+  submitButton: {
+    padding: '10px',
+  },
 };
 
 export default PostDetail;

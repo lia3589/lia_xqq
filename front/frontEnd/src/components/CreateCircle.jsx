@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './CreateCircle.css';
 import { createCircle } from '../services/CircleService';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -55,37 +54,99 @@ const CreateCircle = () => {
     });
   };
 
+  const styles = {
+    createCircle: {
+      fontFamily: 'Arial, sans-serif',
+      padding: '20px',
+    },
+    h1: {
+      marginBottom: '20px',
+    },
+    formGroup: {
+      marginBottom: '20px',
+    },
+    label: {
+      display: 'block',
+      marginBottom: '5px',
+    },
+    input: {
+      width: '100%',
+      padding: '10px',
+      border: '1px solid #ccc',
+      borderRadius: '5px',
+    },
+    textarea: {
+      width: '100%',
+      padding: '10px',
+      border: '1px solid #ccc',
+      borderRadius: '5px',
+    },
+    fileInput: {
+      padding: '5px',
+    },
+    button: {
+      padding: '10px 20px',
+      backgroundColor: '#333',
+      color: 'white',
+      border: 'none',
+      borderRadius: '5px',
+      cursor: 'pointer',
+    },
+    backButton: {
+      position: 'absolute',
+      top: '5%',
+      left: '10%',
+      backgroundColor: '#333',
+      color: 'white',
+      border: 'none',
+      padding: '10px 20px',
+      textAlign: 'center',
+      textDecoration: 'none',
+      display: 'inline-block',
+      fontSize: '16px',
+      margin: '4px 2px',
+      cursor: 'pointer',
+      borderRadius: '4px',
+    },
+    backButtonHover: {
+      color: 'gray',
+    },
+  };
+
   return (
-    <div className="create-circle">
-      <Link to="/CircleExplore" className="back-button">返回</Link>
-      <h1>创建新的兴趣圈</h1>
+    <div style={styles.createCircle} className="create-circle">
+      <Link to="/circle/explore" style={styles.backButton} className="back-button">返回</Link>
+      <h1 style={styles.h1}>创建新的兴趣圈</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>兴趣圈名字:</label>
+        <div style={styles.formGroup} className="form-group">
+          <label style={styles.label}>兴趣圈名字:</label>
           <input
             type="text"
             value={name}
             onChange={handleNameChange}
             required
+            style={styles.input}
           />
         </div>
-        <div className="form-group">
-          <label>描述:</label>
+        <div style={styles.formGroup} className="form-group">
+          <label style={styles.label}>描述:</label>
           <textarea
             value={description}
             onChange={handleDescriptionChange}
             required
+            style={styles.textarea}
           />
         </div>
-        <div className="form-group">
-          <label>上传图片:</label>
+        <div style={styles.formGroup} className="form-group">
+          <label style={styles.label}>上传图片:</label>
           <input
             type="file"
             onChange={handleImageChange}
             required
+            style={styles.fileInput}
           />
         </div>
-        <button type="submit">创建</button>
+        <button type="submit" style={styles.button}>创建</button>
       </form>
     </div>
   );
