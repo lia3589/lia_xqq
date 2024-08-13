@@ -23,8 +23,3 @@ jobs:
       - name: Build frontend
         working-directory: front/frontEnd
         run: npm run build
-      - name: Deploy frontend
-        uses: JamesIves/github-pages-deploy-action@v4.3.3
-        with:
-          branch: gh-pages
-          folder: front/frontEnd/dist
