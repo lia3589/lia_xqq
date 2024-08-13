@@ -1,0 +1,30 @@
+name: Frontend CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install frontend dependencies
+        working-directory: front/frontEnd
+        run: npm install
+      - name: Build frontend
+        working-directory: front/frontEnd
+        run: npm run build
+      - name: Deploy frontend
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        with:
+          branch: gh-pages
+          folder: front/frontEnd/dist
