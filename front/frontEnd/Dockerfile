@@ -11,7 +11,7 @@ COPY ./frontend /app
 RUN npm install
 
 # 暴露端口
-EXPOSE 3000
+EXPOSE 5173
 
 # 启动命令
-CMD ["yarn", "start"]
+CMD ["npm", "run",  "preview"]
