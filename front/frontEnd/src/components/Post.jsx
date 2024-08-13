@@ -168,7 +168,7 @@ const Post = ({ post }) => {
       )}
       <Actions>
         <button onClick={handleLikeClick}>{liked ? '已点赞' : '点赞'} ({likesCount})</button>
-        <Link to={`/posts/${post.id}`}><button>评论 ({post.comment})</button></Link>
+        <Link to={`/posts/${post.id}`}><button>评论 ({post.comments.length})</button></Link>
       </Actions>
       <Separator />
       <InterestCircleContainer>

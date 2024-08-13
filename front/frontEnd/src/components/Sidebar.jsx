@@ -85,9 +85,13 @@ const Sidebar = ({ onLogout }) => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
+    if (storedUser !== null) {
       const parsedUser = JSON.parse(storedUser);
       setUser(parsedUser.user);
+      if (parsedUser.user === undefined) {
+        localStorage.removeItem('user')
+        navigate('/')
+      }
 
       // 获取用户的兴趣圈
       const getCircles = async () => {
@@ -101,6 +105,9 @@ const Sidebar = ({ onLogout }) => {
       };
 
       getCircles();
+    } else {
+      localStorage.removeItem('user')
+      navigate('/')
     }
   }, []);
 

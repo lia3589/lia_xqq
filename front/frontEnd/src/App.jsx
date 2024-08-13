@@ -49,6 +49,7 @@ function App() {
   const handleLogin = (user) => {
     setIsLoggedIn(true);
     setUser(user);
+    console.log("User logged in", user);
     localStorage.setItem('user', JSON.stringify(user));
   };
 

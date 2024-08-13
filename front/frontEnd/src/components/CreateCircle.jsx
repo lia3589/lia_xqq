@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './CreateCircle.css';
 import { createCircle } from '../services/CircleService';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const CreateCircle = () => {
   const [name, setName] = useState('');
@@ -57,6 +57,7 @@ const CreateCircle = () => {
 
   return (
     <div className="create-circle">
+      <Link to="/CircleExplore" className="back-button">返回</Link>
       <h1>创建新的兴趣圈</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

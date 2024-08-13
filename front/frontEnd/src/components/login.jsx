@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
 import defaultAvatar from '../assets/default-avatar1.jpg';
-import { login } from '../services/AuthService'
+import { login, register } from '../services/AuthService'
 
 const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
@@ -15,13 +15,41 @@ const Login = ({ onLogin }) => {
         setLoading(true);
         try {
           const user = await login(username, password);
-          onLogin(user);
+          console.log(user);
+          if (user.success === false) {
+            setError('用户名或密码错误');
+          } else {
+            onLogin(user);
+
+          }
         } catch (error) {
           setError('用户名或密码错误');
         } finally {
           setLoading(false);
         }
       };
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+          const response = await register(username, password);
+          console.log(response);
+          if (response.data.success) {
+            onLogin(response.data);
+          } else {
+            if (response.data.message === '用户名已存在') {
+              setError('用户名已存在');
+            } else {
+              setError('注册失败，请重试');
+            }
+          }
+        } catch (error) {
+          setError('注册失败，请重试');
+        } finally {
+          setLoading(false);
+        }
+    };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -84,11 +112,18 @@ const Login = ({ onLogin }) => {
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
                                 </div>
-                                <button 
-                                    disabled={loading}
-                                    type="submit" className="btn btn-dark btn-block btn-primary">
-                                    {loading ? "正在登录..." : "登录"}
-                                </button>
+                                <div className="d-flex justify-content-between">
+                                    <button 
+                                        disabled={loading}
+                                        type="submit" className="btn btn-dark btn-block btn-primary">
+                                        {loading ? "正在登录..." : "登录"}
+                                    </button>
+                                    <button 
+                                        disabled={loading}
+                                        type="button" className="btn btn-dark btn-block btn-secondary" onClick={handleRegister}>
+                                        {loading ? "正在注册..." : "注册"}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </form>

@@ -24,18 +24,32 @@ export class UserController {
     }
   }
 
-  // @Get('/:id')
-  // async getPost(@Param('id') postId: number) {
-  //   const postsPath = path.resolve(__dirname, '../data/post.data.json');
-  //   const posts = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
+  @Post('/register')
+  async register(@Body() body: any) {
+    const { username, password } = body;
+    const userDataPath = path.resolve(__dirname, '../data/user.data.json');
+    const users = JSON.parse(fs.readFileSync(userDataPath, 'utf-8'));
 
-  //   const post = posts.find((p) => p.id === postId);
-  //   if (post) {
-  //     return { success: true, post };
-  //   } else {
-  //     return { success: false, message: 'Post not found' };
-  //   }
-  // }
+    const existingUser = users.find((u: any) => u.username === username);
+    if (existingUser) {
+      return { success: false, message: '用户名已存在' };
+    }
+
+    const newUserId = users.length > 0 ? Math.max(...users.map((u: any) => u.id)) + 1 : 1;
+
+    const newUser = { id: newUserId, username, password,
+      avatar: '/src/assets/default-avatar1.jpg',
+      posts: [],
+      circlesActivity: {},
+      circlesIds: [],
+      messages: []
+     };
+    users.push(newUser);
+
+    fs.writeFileSync(userDataPath, JSON.stringify(users, null, 2), 'utf-8');
+
+    return { success: true, message: '注册成功', user: newUser };
+  }
 
   @Get('/:id')
   async getUser(@Param('id') userId: number) {
@@ -50,18 +64,4 @@ export class UserController {
       return { success: false, message: '用户不存在' };
     }
   }
-
-  // @Get('/:id')
-  // async getUserById(id: number) {
-  //   const userDataPath = path.resolve(__dirname, '../data/user.data.json');
-  //   const users = JSON.parse(fs.readFileSync(userDataPath, 'utf-8'));
-
-  //   const user = users.find((u: any) => u.id === id);
-
-  //   if (user) {
-  //     return { success: true, message: '获取用户信息成功', user };
-  //   } else {
-  //     return { success: false, message: '用户不存在' };
-  //   }
-  // }
 }

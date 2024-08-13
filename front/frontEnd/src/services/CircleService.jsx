@@ -7,7 +7,7 @@ export const fetchUserCircle = async (userId) => {
     const response = await axios.post(`${API_URL}/api/circles/user`, {
       "userId": userId
     });
-    // console.log(response);
+    console.log(response);
     return response.data.circles;
   } catch (error) {
     console.error('Failed to fetch circle:', error);

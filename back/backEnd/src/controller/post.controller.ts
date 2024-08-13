@@ -12,19 +12,28 @@ export class PostController {
   async createPost(@Body() postData: any) {
     try {
       const postsPath = path.resolve(__dirname, '../data/post.data.json');
+      const usersPath = path.resolve(__dirname, '../data/user.data.json');
+
       const posts = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
+      const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
 
       const newPostId = posts.length > 0 ? Math.max(...posts.map(post => post.id)) + 1 : 1;
       const newPost = { id: newPostId, ...postData };
 
-      // 处理上传的图片
-      // console.log(postData)
       if (this.ctx.files && this.ctx.files.length > 0) {
         newPost.picture = this.ctx.files[0].filename;
       }
-      // console.log(this.ctx.files);
 
       posts.push(newPost);
+
+      const user = users.find(u => u.id === postData.poster_id);
+      if (user) {
+        if (!user.posts) {
+          user.posts = [];
+        }
+        user.posts.push(newPostId);
+        fs.writeFileSync(usersPath, JSON.stringify(users, null, 2), 'utf-8');
+      }
 
       fs.writeFileSync(postsPath, JSON.stringify(posts, null, 2), 'utf-8');
 

@@ -10,12 +10,13 @@
         "title": "优质价格出售自制头像",
         "content": "楼主是大学生,课余时间学习PS制作了一些头像给粉丝宝宝们,数量有限,只给有缘人,5r/张,先到先得",
         "picture": [
-            "http://localhost:7001/uploads/2c825f62-b10c-45a4-862d-0953b46fde84-default-avatar1.jpg",
+            "/src/assets/default-avatar1.jpg",
             "/src/assets/default-avatar2.jpg",
             "/src/assets/default-avatar3.jpg",
             "/src/assets/default-avatar4.jpg",
             "/src/assets/default-avatar5.jpg"
         ],
+        "views": 1000,
         "likes": 901,
         "comment": 3,
         "comments": [
@@ -55,6 +56,7 @@
         "picture": [
             "/src/assets/default-avatar1.jpg"
         ],
+        "views": 0,
         "likes": 0,
         "comment": 0,
         "comments": []
@@ -74,6 +76,7 @@
             "/src/assets/default-avatar2.jpg",
             "/src/assets/default-avatar3.jpg"
         ],
+        "views": 0,
         "likes": 0,
         "comment": 0,
         "comments": []
@@ -95,6 +98,7 @@
             "/src/assets/default-avatar4.jpg",
             "/src/assets/default-avatar5.jpg"
         ],
+        "views": 0,
         "likes": 0,
         "comment": 0,
         "comments": []
@@ -116,6 +120,7 @@
             "/src/assets/default-avatar4.jpg",
             "/src/assets/default-avatar5.jpg"
         ],
+        "views": 0,
         "likes": 0,
         "comment": 0,
         "comments": []
