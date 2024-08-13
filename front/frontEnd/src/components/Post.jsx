@@ -87,7 +87,7 @@ const InterestCircleContainer = styled.div`
 `;
 
 const Post = ({ post }) => {
-  console.log('Post:', post);
+  // console.log('Post:', post);
   const [liked, setLiked] = useState(post.liked || false);
   const [user, setUser] = useState(null);
   const [likesCount, setLikesCount] = useState(post.likes || 0);
