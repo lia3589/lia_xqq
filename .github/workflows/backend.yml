@@ -1,4 +1,4 @@
-name: Frontend CI/CD
+name: Backend CI/CD
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-frontend:
+  build-backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -17,9 +17,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - name: Install frontend dependencies
-        working-directory: front/frontEnd
+      - name: Change working directory to backend
+        working-directory: back/backEnd
+        run: echo "Now in backEnd directory."
+      - name: Install backend dependencies
+        working-directory: back/backEnd
         run: npm install
-      - name: Build frontend
-        working-directory: front/frontEnd
+      - name: Build backend
+        working-directory: back/backEnd
         run: npm run dev
