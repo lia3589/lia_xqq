@@ -109,6 +109,8 @@ const PostDetail = () => {
 const styles = {
   container: {
     width: '100%',
+    max_width: '800px',
+    min_width: '600px',
     padding: '20px',
     display: 'flex',
     flexDirection: 'column',

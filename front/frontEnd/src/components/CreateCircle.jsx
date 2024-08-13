@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { createCircle } from '../services/CircleService';
+import { createCircle, changeCircleImage } from '../services/CircleService';
 import { useNavigate, Link } from 'react-router-dom';
+import { UploadPicture } from '../services/PictureService';
 
 const CreateCircle = () => {
   const [name, setName] = useState('');
@@ -17,7 +18,7 @@ const CreateCircle = () => {
     } else {
       navigate('/');
     }
-  }, []);
+  }, [navigate]);
 
   const handleNameChange = event => {
     setName(event.target.value);
@@ -35,22 +36,27 @@ const CreateCircle = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
+    if (!name || !description) {
+      alert('请填写所有必填字段');
+      return;
+    }
     const formData = new FormData();
     formData.append('name', name);
-    formData.append('description', description);
-    formData.append('image', image);
-    formData.append('creator_id', user.id)
-    formData.append('members', [user.id])
-    formData.append('activeUser',[])
-    formData.append('activity',0)
+    formData.append('description', description);  
+    formData.append('creator_id', user.id);
+    formData.append('members', [user.id]);
+    formData.append('image', image)
+    formData.append('activeUser', []);
+    formData.append('activity', 0);
 
     createCircle(formData).then(response => {
-      console.log(response);
       if (response.success) {
-        navigate('/homepage');
+          navigate('/homepage');
       } else {
         alert('兴趣圈创建失败');
       }
+    }).catch(() => {
+      alert('兴趣圈创建失败');
     });
   };
 

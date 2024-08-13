@@ -66,3 +66,16 @@ export const addCircle = async (userId, circleId) => {
     throw error;
   }
 };
+
+export const changeCircleImage = async (circleId, imageUrl) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/circles/changeImage`, {
+      "circleId": circleId,
+      "imageUrl": imageUrl
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Failed to change circle image:', error);
+    throw error;
+  }
+};

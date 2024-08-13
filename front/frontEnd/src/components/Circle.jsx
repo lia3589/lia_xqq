@@ -46,9 +46,9 @@ const Circle = () => {
       return <div>No members available</div>;
     }
     return (
-      <div className="circle-members-grid">
+      <div className="circle-members-grid" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
         {membersInfo.map(member => (
-          <div key={member.user.id} className="member-block" onClick={() => navigate(`/profiles/${member.user.id}`)}>
+          <div key={member.user.id} className="member-block" onClick={() => navigate(`/profiles/${member.user.id}`)} style={{ flex: '1 1 calc(50% - 10px)', boxSizing: 'border-box' }}>
             <img src={member.user.avatar} alt={member.user.username} className="member-avatar" />
             <span className="member-name">{member.user.username}</span>
           </div>
@@ -58,13 +58,15 @@ const Circle = () => {
   };
 
   return (
-    <div className="circle-page">
+    <div className="circle-page" style={{ textAlign: 'left' }}>
       <div className="circle-header">
         <button className="exit-button" onClick={handleExit}>退出</button>
         <h1>{circleInfo.name || 'Loading...'}</h1>
         <p>{circleInfo.description || ''}</p>
-        <span>热度: {circleInfo.activity}</span>
-        <span>创建者: {circleInfo.creator_id}</span>
+        <div className="circle-info-row">
+          <span>热度: {circleInfo.activity}</span>
+          <span>创建者: {circleInfo.creator_id}</span>
+        </div>
         <span>兴趣圈成员:</span>
         {renderMembers()}
       </div>

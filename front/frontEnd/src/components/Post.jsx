@@ -14,7 +14,7 @@ const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 100%;
+  max-width: 600px;
   box-sizing: border-box;
 `;
 
@@ -53,6 +53,7 @@ const Content = styled.p`
   color: #000000;
   margin: 0 0 10px 0;
   text-align: left;
+  word-wrap: break-word;
 `;
 
 const Actions = styled.div`

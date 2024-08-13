@@ -119,4 +119,20 @@ export class CircleController {
   }
 }
 
+@Post('/changeImage')
+async changeImage(@Body() data: { circleId: number, imageUrl: string }) {
+  const circlesPath = path.resolve(__dirname, '../data/circles.data.json');
+  const circles = JSON.parse(fs.readFileSync(circlesPath, 'utf-8'));
+
+  const circle = circles.find((c) => c.id === data.circleId);
+
+  if (circle) {
+    circle.image = data.imageUrl; // 更新circle的image字段
+    fs.writeFileSync(circlesPath, JSON.stringify(circles, null, 2), 'utf-8');
+    return { success: true, message: 'Image updated successfully', circle };
+  } else {
+    return { success: false, message: 'Circle not found' };
+  }
+}
+
 }

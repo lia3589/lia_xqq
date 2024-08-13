@@ -63,7 +63,18 @@ const AddPost = () => {
     const formData = new FormData();
     formData.append('poster_id', parseInt(user.id, 10));
     formData.append('poster', user.username);
-    formData.append('time', new Date().toISOString());
+    const formatDate = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
+
+formData.append('time', formatDate(new Date()));
+
     formData.append('poster_avatar', user.avatar);
     formData.append('interest_circle', selectedCircle.name);
     formData.append('interest_circle_id', parseInt(selectedCircle.id, 10));
@@ -162,7 +173,7 @@ const AddPost = () => {
           </div>
         </div>
         <button type="submit" className="btn btn-primary">
-          <i className="fas fa-paper-plane"></i> Submit
+          <i className="fas fa-paper-plane"></i> 发送
         </button>
       </form>
     </div>
