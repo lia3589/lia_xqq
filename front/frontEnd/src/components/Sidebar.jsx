@@ -98,7 +98,7 @@ const Sidebar = ({ onLogout }) => {
         try {
           const circleMessage = await fetchUserCircle(parsedUser.user.id);
           setCircles(circleMessage);
-          console.log('Circles:', circleMessage);
+          // console.log('Circles:', circleMessage);
         } catch (error) {
           console.error('Failed to fetch circles:', error);
         }

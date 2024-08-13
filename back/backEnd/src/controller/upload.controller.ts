@@ -12,6 +12,7 @@ export class UploadController {
 
   @Post('/')
   async uploadImage(@Files() files) {
+    console.log(files);
     if (!files || files.length === 0) {
       return { success: false, message: 'No file uploaded' };
     }
@@ -21,12 +22,13 @@ export class UploadController {
     const filePath = path.join(uploadDir, `${uuidv4()}-${file.filename}`);
 
     if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir);
+      fs.mkdirSync(uploadDir, { recursive: true });
     }
 
-    fs.writeFileSync(filePath, file.data);
+    const fileContent = fs.readFileSync(file.data);
+    fs.writeFileSync(filePath, fileContent);
 
-    const fileUrl = `${this.ctx.origin}/uploads/${path.basename(filePath)}`;
+    const fileUrl = `${this.ctx.origin}/${path.basename(filePath)}`;
     return { success: true, url: fileUrl };
   }
 }

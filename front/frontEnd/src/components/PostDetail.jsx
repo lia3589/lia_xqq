@@ -19,6 +19,7 @@ const PostDetail = () => {
       const postData = await getPostById(id);
       if (postData.success) {
         setPost(postData.post);
+        console.log(postData.post)
         setComments(postData.post.comments || []);
         setLikes(postData.post.likes || 0);
       }

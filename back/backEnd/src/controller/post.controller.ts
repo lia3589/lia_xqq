@@ -19,11 +19,10 @@ export class PostController {
 
       const newPostId = posts.length > 0 ? Math.max(...posts.map(post => post.id)) + 1 : 1;
       const newPost = { id: newPostId, ...postData };
-
+      console.log(newPost)
       if (this.ctx.files && this.ctx.files.length > 0) {
         newPost.picture = this.ctx.files[0];
       }
-      console.log(this.ctx.files)
 
       posts.push(newPost);
 

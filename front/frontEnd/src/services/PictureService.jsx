@@ -3,6 +3,7 @@ import axios from 'axios';
 const API_URL = 'http://localhost:7001/';
 
 export const UploadPicture = async (picture) => {
+    console.log('picture', picture);
     if (!picture) {
         throw new Error('缺少图片文件');
     }
