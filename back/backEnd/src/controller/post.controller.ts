@@ -21,8 +21,9 @@ export class PostController {
       const newPost = { id: newPostId, ...postData };
 
       if (this.ctx.files && this.ctx.files.length > 0) {
-        newPost.picture = this.ctx.files[0].filename;
+        newPost.picture = this.ctx.files[0];
       }
+      console.log(this.ctx.files)
 
       posts.push(newPost);
 
@@ -148,6 +149,30 @@ export class PostController {
       }
     } catch (error) {
       return { success: false, message: 'Failed to add comment' };
+    }
+  }
+
+  @Post('/:postId/comments/:commentId/like')
+  async likeComment(@Param('postId') postId: number, @Param('commentId') commentId: number) {
+    try {
+      const postsPath = path.resolve(__dirname, '../data/post.data.json');
+      const posts = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
+
+      const post = posts.find((p) => p.id === postId);
+      if (post) {
+        const comment = post.comments.find((c) => c.id === commentId);
+        if (comment) {
+          comment.likes += 1;
+          fs.writeFileSync(postsPath, JSON.stringify(posts, null, 2), 'utf-8');
+          return { success: true, comment };
+        } else {
+          return { success: false, message: 'Comment not found' };
+        }
+      } else {
+        return { success: false, message: 'Post not found' };
+      }
+    } catch (error) {
+      return { success: false, message: 'Failed to like comment' };
     }
   }
 }

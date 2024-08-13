@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './CircleExplore.css';
+import '../styles/CircleExplore.css';
 import { getCircles, addCircle } from '../services/CircleService';
 import { getUserById } from '../services/AuthService';
 

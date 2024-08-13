@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import './Circle.css';
+import '../styles/Circle.css';
 import PostList from './PostList';
 import { fetchCircle } from '../services/CircleService';
 import { getUserById } from '../services/AuthService';

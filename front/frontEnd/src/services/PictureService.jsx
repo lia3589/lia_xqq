@@ -7,12 +7,10 @@ export const UploadPicture = async (picture) => {
         throw new Error('缺少图片文件');
     }
 
-    // 假设 picture 是一个 File 对象
     if (!(picture instanceof File)) {
         throw new Error('上传的不是一个有效的文件');
     }
 
-    // 验证文件类型是否为图片
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!allowedTypes.includes(picture.type)) {
         throw new Error('不支持的文件类型');

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createPost } from '../services/PostService';
 import { getCircles } from '../services/CircleService';
 import { UploadPicture } from '../services/PictureService'; // 导入UploadPicture方法
-import './AddPost.css';
+import '../styles/AddPost.css';
 import { ImageUploader } from './ImageUploader'
 
 const AddPost = () => {
