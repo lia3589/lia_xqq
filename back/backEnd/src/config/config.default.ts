@@ -28,6 +28,18 @@ export default {
       },
     }
   },
+  staticFile : {
+    dirs: {
+      default: {
+        prefix: '/',
+        dir: './interknotfrontend',
+      },
+      another: {
+        prefix: '/public',
+        dir: join(__dirname, '../../uploads'),
+      }
+    }
+  },
   upload: {
     // mode: UploadMode, 默认为file，即上传到服务器临时目录，可以配置为 stream
     mode: 'file',
@@ -44,8 +56,4 @@ export default {
     // 仅在匹配路径到 /api/upload 的时候去解析 body 中的文件信息
     match: /\/upload/,
   },
-  staticFile: {
-    prefix: '/public',
-    dir: join(__dirname, '../../uploads'),
-  }
 } as MidwayConfig;

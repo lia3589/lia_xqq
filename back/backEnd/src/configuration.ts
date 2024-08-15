@@ -8,6 +8,7 @@ import * as orm from '@midwayjs/orm';
 import * as jwt from '@midwayjs/jwt';
 import * as upload from '@midwayjs/upload';
 import * as staticCache from 'koa-static';
+import * as staticFile from '@midwayjs/static-file';
 
 // import { DefaultErrorFilter } from './filter/default.filter';
 // import { NotFoundFilter } from './filter/notfound.filter';
@@ -21,6 +22,7 @@ import { ReportMiddleware } from './middleware/report.middleware';
     orm,
     jwt,
     upload,
+    staticFile,
     {
       component: info,
       enabledEnvironment: ['local'],

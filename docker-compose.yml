@@ -1,0 +1,18 @@
+version: '3'
+services:
+  web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: front\frontEnd\Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+  backend:
+    container_name: backend
+    build: 
+      context: .
+      dockerfile: back\backEnd\Dockerfile
+    ports:
+      - "7001:7001"

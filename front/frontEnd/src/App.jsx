@@ -82,7 +82,8 @@ function App() {
           <Route path="/posts/new" element={isLoggedIn ? <AddPost /> : <Navigate to="/" />} />
           <Route path="/posts/:id" element={isLoggedIn ? <PostDetail /> : <Navigate to="/" />} />
           <Route path="/" element={isLoggedIn ? <Navigate to="/homepage" /> : <Login onLogin={handleLogin} />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path='/index.html' element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/index.html" />} />
 
           
         </Routes>

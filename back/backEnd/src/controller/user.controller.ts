@@ -38,7 +38,7 @@ export class UserController {
     const newUserId = users.length > 0 ? Math.max(...users.map((u: any) => u.id)) + 1 : 1;
 
     const newUser = { id: newUserId, username, password,
-      avatar: '/src/assets/default-avatar1.jpg',
+      avatar: 'default-avatar1.jpg',
       posts: [],
       circlesActivity: {},
       circlesIds: [],

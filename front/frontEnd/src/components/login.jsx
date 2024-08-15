@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import defaultAvatar from '../assets/default-avatar1.jpg';
 import { login, register } from '../services/AuthService'
 
 const Login = ({ onLogin }) => {
@@ -7,7 +6,7 @@ const Login = ({ onLogin }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [avatar, setAvatar] = useState(defaultAvatar);
+    const [avatar, setAvatar] = useState('default-avatar1.jpg');
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -96,7 +95,7 @@ const Login = ({ onLogin }) => {
         <>
             <div className="card container mt-5">
                 <div className="card-body">
-                    <img src='\src\assets\INTER-KNOT1.png' alt="logo"></img>
+                    <img src='INTER-KNOT1.png' alt="logo"></img>
                     <h1 className="card-title">登录绳网</h1>
                     {error && <div className="alert alert-danger" role="alert" >
                         {error}
